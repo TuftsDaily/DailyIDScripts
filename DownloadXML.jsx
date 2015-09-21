@@ -5,7 +5,7 @@ var Daily = Daily || {};
 
 Daily.DownloadXMLDialog = function() {
 
-	var XML_SERVICE_BASE = "http://localhost/Projects/Tufts/Daily/office/daily-xml-service/";
+	var XML_SERVICE_BASE = "http://hope.tuftsdaily.com/";
 
 	// Categories to Programmatically Generate Dropdown Menu
 	var sections = [
@@ -80,13 +80,14 @@ Daily.DownloadXMLDialog = function() {
 			var res = req.do();
 
 			if (res.status == 200) {
-				alert("Articles Downloaded!");
-				// TODO Auto-Import XML
+				Daily.ImportXML(section);
 			} else {
 				alert(res.body);
 			}
 
 		} catch (e) {
+			// Could Not Connect to Server
+			alert(e);
 			alert("Could Not Load Articles from Server (Error #1)");
 		}
 
@@ -95,3 +96,44 @@ Daily.DownloadXMLDialog = function() {
 	myDialog.destroy()
 
 }
+
+Daily.ImportXMLInit = function() {
+
+	var myDocument = app.activeDocument;
+	var myXMLImportPreferences = myDocument.xmlImportPreferences;
+	myXMLImportPreferences.allowTransform = false;
+	myXMLImportPreferences.createLinkToXML = true;
+	myXMLImportPreferences.ignoreUnmatchedIncoming = false;
+	myXMLImportPreferences.ignoreWhitespace = true;
+	myXMLImportPreferences.importCALSTables = true;
+	myXMLImportPreferences.importTextIntoTables = false;
+	myXMLImportPreferences.importToSelected = false;
+	myXMLImportPreferences.removeUnmatchedExisting = false;
+	myXMLImportPreferences.repeatTextElements = false; 
+
+ }
+
+ Daily.ImportXML = function(section) {
+
+ 	return;
+
+ 	var myDocument = app.activeDocument;
+ 	var i = 0;
+
+	while (i < 10) {
+		try {
+			var f = File("C:/Dropbox/Current Day/"+section+".xml");
+		} catch(e) {
+			alert(e);
+		}
+		if (f.exists) {
+			myDocument.importXML(f);
+			break;
+		} else {
+			$.delay(1000);
+			i++; 
+		}
+	 }
+	 alert('Done looping.')
+
+ }

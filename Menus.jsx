@@ -2,12 +2,19 @@
 
 // Keep All Functions Daily Namespace
 var Daily = {}
-// #include "Separator.jsx"
+#include "Separator.jsx"
 #include "DownloadXML.jsx"
 // #include "ExportPDF.jsx"
 
 // Create Top-Level Menu
 var appMenu = app.menus.item("$ID/Main");
+// Get Rid of Old Menu First, If Exists
+try {
+	var oldTdMenu = appMenu.submenus.item("Tufts Daily");
+	oldTdMenu.remove();
+} catch(e) {
+	alert(e);
+}
 var tdMenu = appMenu.submenus.add("Tufts Daily")
 
 // Populate the New Menu
@@ -20,11 +27,11 @@ var addMenuItem = function(parent, label, callback) {
 }
 
 addMenuItem(tdMenu, "Break into Sections", function() {
-	alert("Coming Soon!");
-	// Daily.Separator();
+	Daily.Separator();
 });
 
-addMenuItem(tdMenu, "Download Articles...", function() {
+addMenuItem(tdMenu, "Download Articles...", function() {    
+    Daily.ImportXMLInit();
 	Daily.DownloadXMLDialog();
 });
 
